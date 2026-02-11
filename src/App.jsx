@@ -1,13 +1,22 @@
-
+import { Routes,Route } from 'react-router'
 import { HomePage } from './pages/homePage'
+import { Checkout } from './pages/CheckoutPage'
+import { OrdersPage } from './pages/OrdersPage'
+import { Tracking } from './pages/TrackingPage'
 import './App.css'
 
 function App() {
 
 
   return (
-    
-    <HomePage/>
+    <Routes>
+      <Route path='/' element={<HomePage/>}/>
+     
+      <Route path='checkout' element={<Checkout/>}/>
+      <Route path='orders' element={<OrdersPage/>}/>
+      <Route path='tracking' element={<Tracking/>}/>
+      
+    </Routes>
   
    
   )
