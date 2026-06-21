@@ -3,16 +3,12 @@ import { useEffect,useState } from "react";
 import axios from "axios";
 import "./HomePage.css";
 
-export function HomePage() {
+export function HomePage({cart}) {
   const [products,setProducts]=useState([]);
-  const [cart,setCart]=useState([]);
   useEffect(() => {
     axios.get("/api/products").then((Response) => {
       setProducts(Response.data);
     });
-    axios.get("/api/cart-items").then((Response)=>{
-      setCart(Response.data)
-    })
   },[]);
 
   return (
@@ -65,13 +61,13 @@ export function HomePage() {
 
                 <div className="product-spacer"></div>
 
-                <div className="added-to-cart">
+                <div className="added-{cart}">
                   <img src="images/icons/checkmark.png" />
                   Added
                 </div>
 
-                <button className="add-to-cart-button button-primary">
-                  Add to Cart
+                <button className="add-{cart}-button button-primary">
+                  Add {cart}
                 </button>
               </div>
             );
