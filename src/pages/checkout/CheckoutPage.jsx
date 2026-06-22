@@ -2,6 +2,7 @@ import "./CheckoutPage.css";
 import { CheckoutHeader } from "./CheckoutHeader";
 
 export function Checkout({ cart }) {
+  console.log("............cart",cart)
   return (
     <>
       <title>Checkout</title>

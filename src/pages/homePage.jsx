@@ -13,7 +13,7 @@ export function HomePage({cart}) {
 
   return (
     <>
-      <Header />
+      <Header cart={cart}/>
 
       <div className="home-page">
         <div className="products-grid">
@@ -61,13 +61,13 @@ export function HomePage({cart}) {
 
                 <div className="product-spacer"></div>
 
-                <div className="added-{cart}">
+                <div className="added-to-cart">
                   <img src="images/icons/checkmark.png" />
                   Added
                 </div>
 
-                <button className="add-{cart}-button button-primary">
-                  Add {cart}
+                <button className="add-to-cart-button button-primary">
+                  Add cart
                 </button>
               </div>
             );
