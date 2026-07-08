@@ -6,11 +6,13 @@ import dayjs from "dayjs";
 export function OrdersPage({ cart }) {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
-    axios.get("/api/orders?expand=products").then((Response) => {
-      setOrders(Response.data);
-    });
+    const fetchOrderData = async () => {
+      const response = await axios.get("/api/orders?expand=products");
+      setOrders(response.data);
+    };
+    fetchOrderData();
   }, []);
-  console.log("oreders", orders);
+
   return (
     <>
       <title>Orders</title>

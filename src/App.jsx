@@ -8,16 +8,18 @@ import "./App.css";
 import { useState, useEffect } from "react";
 function App() {
   const [cart, setCart] = useState([]);
+  const getCart = async () => {
+    const Response = await axios.get("/api/cart-items?expand=product");
+    setCart(Response.data);
+  };
   useEffect(() => {
-    axios.get("/api/cart-items?expand=product").then((Response) => {
-      setCart(Response.data);
-    });
+    getCart();
   }, []);
   return (
     <Routes>
-      <Route path="/" element={<HomePage  cart={cart}/>} />
+      <Route path="/" element={<HomePage cart={cart} getCart={getCart} />} />
 
-      <Route path="checkout" element={<Checkout  cart={cart}/>} />
+      <Route path="checkout" element={<Checkout cart={cart} />} />
       <Route path="orders" element={<OrdersPage cart={cart} />} />
       <Route path="tracking" element={<TrackingPage />} />
     </Routes>
