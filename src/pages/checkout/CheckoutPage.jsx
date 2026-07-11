@@ -2,10 +2,17 @@ import "./CheckoutPage.css";
 import { CheckoutHeader } from "./CheckoutHeader";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import dayjs from "dayjs";
 export function Checkout({ cart, getCart }) {
   const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
+  const navigate = useNavigate();
+  const createOrder = async () => {
+    await axios.post("/api/orders");
+    await getCart();
+    navigate("/orders");
+  };
   useEffect(() => {
     const fetchCheckoutData = async () => {
       let Response = await axios.get(
@@ -183,7 +190,10 @@ export function Checkout({ cart, getCart }) {
                   </div>
                 </div>
 
-                <button className="place-order-button button-primary">
+                <button
+                  className="place-order-button button-primary"
+                  onClick={createOrder}
+                >
                   Place your order
                 </button>
               </>
