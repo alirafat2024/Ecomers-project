@@ -3,7 +3,7 @@ import { CheckoutHeader } from "./CheckoutHeader";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-export function Checkout({ cart }) {
+export function Checkout({ cart, getCart }) {
   const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
   useEffect(() => {
@@ -12,12 +12,17 @@ export function Checkout({ cart }) {
         "/api/delivery-options?expand=estimatedDeliveryTime",
       );
       setDeliveryOptions(Response.data);
-      const response = await axios.get("/api/payment-summary");
-      setPaymentSummary(response.data);
     };
     fetchCheckoutData();
   }, []);
-  console.log("payment summary", paymentSummary);
+
+  useEffect(() => {
+    const payment = async () => {
+      const response = await axios.get("/api/payment-summary");
+      setPaymentSummary(response.data);
+    };
+    payment();
+  }, [cart]);
   return (
     <>
       <title>Checkout</title>
@@ -81,10 +86,20 @@ export function Checkout({ cart }) {
                           if (deliveryOption.priceCents > 0) {
                             priceString = `${(deliveryOption.priceCents / 100).toFixed(2)}-Shipping`;
                           }
+                          const updateDeliveryOption = async () => {
+                            await axios.put(
+                              `/api/cart-items/${cartItem.productId}`,
+                              {
+                                deliveryOptionId: deliveryOption.id,
+                              },
+                            );
+                            await getCart();
+                          };
                           return (
                             <div
                               key={deliveryOption.id}
                               className="delivery-option"
+                              onClick={updateDeliveryOption}
                             >
                               <input
                                 type="radio"
@@ -92,6 +107,7 @@ export function Checkout({ cart }) {
                                   deliveryOption.id ===
                                   cartItem.deliveryOptionId
                                 }
+                                onChange={() => {}}
                                 className="delivery-option-input"
                                 name={`delivery-option-${cartItem.productId}`}
                               />
