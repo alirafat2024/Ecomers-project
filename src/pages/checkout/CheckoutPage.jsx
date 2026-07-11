@@ -39,6 +39,13 @@ export function Checkout({ cart, getCart }) {
                     return deliveryOption.id === cartItem.deliveryOptionId;
                   },
                 );
+                const deleteCartItem = async () => {
+                  await axios.delete(`/api/cart-items/${cartItem.productId}`);
+                  await getCart();
+                };
+                const updateCartItem = async () => {
+                  await axios.put(`/api/cart-items/${cartItem.productId}`);
+                };
                 return (
                   <div key={cartItem.productId} className="cart-item-container">
                     <div className="delivery-date">
@@ -68,10 +75,16 @@ export function Checkout({ cart, getCart }) {
                               {cartItem.quantity}
                             </span>
                           </span>
-                          <span className="update-quantity-link link-primary">
+                          <span
+                            className="update-quantity-link link-primary"
+                            onClick={updateCartItem}
+                          >
                             Update
                           </span>
-                          <span className="delete-quantity-link link-primary">
+                          <span
+                            className="delete-quantity-link link-primary"
+                            onClick={deleteCartItem}
+                          >
                             Delete
                           </span>
                         </div>
